@@ -1,17 +1,18 @@
+import 'package:alarm_clock/widgets/app_barr.dart';
 import 'package:flutter/material.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class AlarmPage extends StatefulWidget {
+  const AlarmPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<AlarmPage> createState() => _AlarmPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _AlarmPageState extends State<AlarmPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Alarm Clock'), titleTextStyle: TextStyle(color: Colors.white),),
+      appBar: alarmClockAppBar,
       body: Center(
         child: Text(
           'Alarm Clock', 
