@@ -1,3 +1,6 @@
+import 'package:alarm_clock/constants/fake_alarm_list.dart';
+import 'package:alarm_clock/constants/styles.dart';
+import 'package:alarm_clock/widgets/alarm_list.dart';
 import 'package:alarm_clock/widgets/app_barr.dart';
 import 'package:flutter/material.dart';
 
@@ -13,13 +16,15 @@ class _AlarmPageState extends State<AlarmPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: alarmClockAppBar,
-      body: Center(
-        child: Text(
-          'Alarm Clock', 
-          style: TextStyle(
-          color: Colors.white
-          ),
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            AlarmListWidget(),
+          ],
         ),
+        
+
       ),
     );
   }
