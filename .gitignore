@@ -46,10 +46,6 @@ app.*.map.json
 
 
 # shit that doesnt matter
-android/
-ios/
-linux/
-macos/
+windows/
 test/
-web/
 .metadata
