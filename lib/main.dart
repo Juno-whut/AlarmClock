@@ -1,5 +1,5 @@
 import 'package:alarm_clock/constants/colors.dart';
-import 'package:alarm_clock/pages/main_page.dart';
+import 'package:alarm_clock/pages/alarm_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: AppColors.surface,
       ),
-      home: const MainPage(),
+      home: const AlarmPage(),
       
     );
   }
