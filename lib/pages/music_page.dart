@@ -1,4 +1,5 @@
 import 'package:alarm_clock/widgets/music_appbar.dart';
+import 'package:alarm_clock/widgets/song_list.dart';
 import 'package:flutter/material.dart';
 
 class MusicPage extends StatefulWidget {
@@ -10,12 +11,18 @@ class MusicPage extends StatefulWidget {
 
 class _MusicPageState extends State<MusicPage> {
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: PreferredSize(
-          preferredSize: const Size.fromHeight(75.0),
+          preferredSize: const Size.fromHeight(100.0),
           child: AppBar(
+            automaticallyImplyLeading: false,
             title: Padding(
               padding: const EdgeInsets.all(0.0),
               child: MusicAppbar(),
@@ -23,7 +30,21 @@ class _MusicPageState extends State<MusicPage> {
           ),
         ),
       ),
-      body: Container(),
+
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // music list
+              SongList()
+              // add music button
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
