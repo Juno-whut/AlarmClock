@@ -1,5 +1,18 @@
+import 'package:alarm_clock/constants/colors.dart';
 import 'package:flutter/material.dart';
 
+
+
+// appbar decoration
+BoxDecoration headerDecoration = BoxDecoration(
+  gradient: LinearGradient(
+    colors: [
+      Colors.transparent,
+      AppColors.primary
+    ],
+  ),
+  borderRadius: BorderRadius.circular(50),
+);
 
 // text style for the appbar
 const appBarStyle = TextStyle(
