@@ -14,6 +14,17 @@ BoxDecoration headerDecoration = BoxDecoration(
   borderRadius: BorderRadius.circular(50),
 );
 
+// tile  decoration
+BoxDecoration tileDecoration = BoxDecoration(
+  gradient: LinearGradient(
+    colors: [
+      Colors.transparent,
+      AppColors.primaryContainer
+    ],
+  ),
+  borderRadius: BorderRadius.circular(50),
+);
+
 // text style for the appbar
 const appBarStyle = TextStyle(
   color: Colors.white,
