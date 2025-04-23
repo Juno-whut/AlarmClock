@@ -1,4 +1,5 @@
 import 'package:alarm_clock/constants/styles.dart';
+import 'package:alarm_clock/pages/alarm_page.dart';
 import 'package:flutter/material.dart';
 
 class MusicAppbar extends StatelessWidget {
@@ -8,13 +9,15 @@ class MusicAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 75,
-      margin: EdgeInsets.fromLTRB(0, 50, 0, 50),
+      margin: EdgeInsets.fromLTRB(25, 50, 25, 50),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Text("Music Page", style: appBarStyle),
           IconButton(
-            onPressed: () {}, 
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AlarmPage()));
+            }, 
             icon: const Icon(
               Icons.alarm_outlined, 
               color: Colors.white, size: 42

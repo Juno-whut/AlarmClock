@@ -1,4 +1,5 @@
 import 'package:alarm_clock/constants/styles.dart';
+import 'package:alarm_clock/pages/music_page.dart';
 import 'package:flutter/material.dart';
 
 class AlarmClockAppbar extends StatelessWidget {
@@ -16,7 +17,9 @@ class AlarmClockAppbar extends StatelessWidget {
         children: [
           const Text("Alarm Page", style: appBarStyle),
           IconButton(
-            onPressed: () {}, 
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MusicPage()));
+            }, 
             icon: const Icon(
               Icons.music_video_outlined, 
               color: Colors.white, size: 42
