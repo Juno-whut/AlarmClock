@@ -8,8 +8,9 @@ class MusicAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75,
-      margin: EdgeInsets.fromLTRB(25, 50, 25, 50),
+      height: 100,
+      padding: EdgeInsets.all(5),
+      decoration: headerDecoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
