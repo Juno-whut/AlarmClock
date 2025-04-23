@@ -13,7 +13,7 @@ class _AlarmListWidgetState extends State<AlarmListWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(25.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
