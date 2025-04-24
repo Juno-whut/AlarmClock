@@ -1,9 +1,30 @@
-import 'package:alarm_clock/constants/fake_song_list.dart';
+import 'package:alarm_clock/constants/song_class.dart';
 import 'package:alarm_clock/constants/styles.dart';
+import 'package:alarm_clock/services/music_service.dart';
 import 'package:flutter/material.dart';
 
-class SongList extends StatelessWidget {
+
+class SongList extends StatefulWidget {
   const SongList({super.key});
+  @override
+  State<SongList> createState() => _SongListState();
+}
+
+class _SongListState extends State<SongList> {
+  List<SongLibrary> songList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSongs();
+  } 
+
+  Future<void> _loadSongs() async {
+    final loadedSongs = await loadSongs();
+    setState(() {
+      songList = loadedSongs;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +62,7 @@ class SongList extends StatelessWidget {
                   const SizedBox(width: 20),
                   // Delete Button
                   IconButton(
-                    onPressed: () {}, 
+                    onPressed: () {deleteMp3File('${songList[i].name}.mp3');}, 
                     icon: const Icon(
                       Icons.delete, 
                       color: Colors.white, size: 28

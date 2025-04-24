@@ -1,6 +1,6 @@
 import 'package:alarm_clock/constants/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:alarm_clock/services/add_song_service.dart';
+import 'package:alarm_clock/services/music_service.dart';
 
 class AddSongButton extends StatelessWidget {
   const AddSongButton({super.key});
@@ -8,7 +8,7 @@ class AddSongButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.large(
-      onPressed: () {pickMp3File();},
+      onPressed: () {importSong();},
       backgroundColor: AppColors.primary,
       child: const Icon(
         Icons.add, 
