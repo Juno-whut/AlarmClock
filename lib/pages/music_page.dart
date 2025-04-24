@@ -1,3 +1,4 @@
+import 'package:alarm_clock/widgets/add_song_button.dart';
 import 'package:alarm_clock/widgets/music_appbar.dart';
 import 'package:alarm_clock/widgets/song_list.dart';
 import 'package:flutter/material.dart';
@@ -32,17 +33,13 @@ class _MusicPageState extends State<MusicPage> {
       ),
 
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(25.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // music list
-              SongList()
-              // add music button
-            ],
-          ),
+        child: Column(
+          children: [
+            // music list
+            SongList(),
+            // add music button
+            AddSongButton()
+          ],
         ),
       ),
     );
