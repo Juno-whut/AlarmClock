@@ -1,15 +1,27 @@
-import 'package:alarm_clock/constants/fake_alarm_list.dart';
+import 'package:alarm_clock/constants/alarm_class.dart';
 import 'package:alarm_clock/constants/styles.dart';
+import 'package:alarm_clock/services/alarm_service.dart';
 import 'package:flutter/material.dart';
 
 class AlarmListWidget extends StatefulWidget {
   const AlarmListWidget({super.key});
 
   @override
-  State<AlarmListWidget> createState() => _AlarmListWidgetState();
+  State<AlarmListWidget> createState() => _AlarmListWidgetState(); 
 }
 
 class _AlarmListWidgetState extends State<AlarmListWidget> {
+  List<AlarmList> alarmList = [];
+  @override
+  void initState(){
+    super.initState();
+    readAlarmJsonList().then((alarms) {
+      setState((){
+        alarmList = alarms;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,7 +32,7 @@ class _AlarmListWidgetState extends State<AlarmListWidget> {
         children: [
           const SizedBox(height:20),
           Text("Alarm List", style: headingStyle,),
-          for (int i = 0; i < alarms.length; i++) 
+          for (int i = 0; i < alarmList.length; i++) 
             Container(
               height: 75,
               decoration: headerDecoration,
@@ -31,26 +43,31 @@ class _AlarmListWidgetState extends State<AlarmListWidget> {
                 children: [
                   Row(
                     children: [
-                      if (alarms[i].title != null) Text(alarms[i].title!, style: bodyStyle,),
+                      if (alarmList[i].title != null) Text(alarmList[i].title!, style: bodyStyle,),
                       const SizedBox(width: 10,),
-                      Text(alarms[i].time, style: timeStyle),
+                      Text(alarmList[i].time, style: timeStyle),
                       const SizedBox(width: 5,),
-                      Text(alarms[i].ampm, style: timeStyle),
+                      Text(alarmList[i].ampm, style: timeStyle),
                       const SizedBox(width: 15,),
-                      Text(alarms[i].song, style: bodyStyle,),
+                      Text(alarmList[i].song, style: bodyStyle,),
                       const SizedBox(width: 15,),
                       // figure out how to use switch
                       Switch(
-                        value: alarms[i].isOn,
+                        value: alarmList[i].isOn,
                         onChanged: (bool value) {
                           setState(() {
-                            alarms[i].isOn = value;
+                            alarmList[i].isOn = value;
                           });
                         },
                       ),
                       const SizedBox(width: 15,),
                       IconButton(
-                        onPressed: () {}, 
+                        onPressed: () {
+                          deleteAlarm(i);
+                          setState((){
+                            alarmList.removeAt(i);
+                          });
+                        }, 
                         icon: const Icon(
                           Icons.delete, 
                           color: Colors.white, size: 24
