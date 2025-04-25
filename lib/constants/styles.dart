@@ -15,13 +15,8 @@ BoxDecoration headerDecoration = BoxDecoration(
 );
 
 // tile  decoration
-BoxDecoration tileDecoration = BoxDecoration(
-  gradient: LinearGradient(
-    colors: [
-      Colors.transparent,
-      AppColors.primaryContainer
-    ],
-  ),
+BoxDecoration box = BoxDecoration(
+  color: AppColors.primaryContainer,
   borderRadius: BorderRadius.circular(50),
 );
 
