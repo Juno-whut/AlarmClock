@@ -2,6 +2,7 @@ import 'package:alarm_clock/constants/song_class.dart';
 import 'package:alarm_clock/constants/styles.dart';
 import 'package:alarm_clock/services/music_service.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 
 class SongList extends StatefulWidget {
@@ -12,17 +13,37 @@ class SongList extends StatefulWidget {
 
 class _SongListState extends State<SongList> {
   List<SongLibrary> songList = [];
+  AudioPlayer? _audioPlayer;
+  int? _currentPlayingIndex;
 
   @override
   void initState() {
     super.initState();
-    _loadSongs();
+    loadSongs().then((songs) {
+      setState(() {
+        songList = songs;
+      });
+    });
+    _audioPlayer = AudioPlayer();
   } 
 
-  Future<void> _loadSongs() async {
-    final loadedSongs = await loadSongs();
-    setState(() {
-      songList = loadedSongs;
+  @override
+  void dispose() {
+    _audioPlayer?.dispose();
+    super.dispose();  
+  }
+
+  Future<void> _playSample(String path, int index) async {
+    if (_currentPlayingIndex != null && _currentPlayingIndex != index) {
+      await _audioPlayer!.stop();
+    }
+
+    _currentPlayingIndex = index;
+    await _audioPlayer!.play(DeviceFileSource(path));
+    
+    Future.delayed(Duration(seconds:15), () async {
+      await _audioPlayer!.stop();
+      _currentPlayingIndex = null;  
     });
   }
 
@@ -47,7 +68,10 @@ class _SongListState extends State<SongList> {
                 children: [
                   // Sample Button
                   IconButton(
-                    onPressed: () {}, // using audioplayer packagae play first 15 seconds of songList[i].path
+                    onPressed: () {
+                      _playSample(songList[i].path,  i);
+                      
+                    }, // using audioplayer packagae play first 15 seconds of songList[i].path
                     icon: const Icon(
                       Icons.play_circle_outline_sharp, 
                       color: Colors.white, size: 28
@@ -62,12 +86,18 @@ class _SongListState extends State<SongList> {
                   const SizedBox(width: 20),
                   // Delete Button
                   IconButton(
-                    onPressed: () {deleteMp3File('${songList[i].name}.mp3');}, 
+                    onPressed: () {
+                      deleteMp3File(songList[i].path, i);
+                      setState(() {
+                        songList.removeAt(i);
+                      });
+                    },
                     icon: const Icon(
                       Icons.delete, 
                       color: Colors.white, size: 28
                     ),
                   ),
+                  
                 ],
               ),
             ),

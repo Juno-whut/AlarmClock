@@ -73,8 +73,10 @@ Future<SongLibrary?> importSong() async {
 }
 
 
-
-Future<bool> deleteMp3File(String filePath) async {
+Future<bool> deleteMp3File(String filePath, int index) async {
+  final jsonList = await readSongJsonList();
+  jsonList.removeAt(index);
+  await writeSongJsonList(jsonList);
   final file = File(filePath);
   if (await file.exists()) {
     await file.delete();

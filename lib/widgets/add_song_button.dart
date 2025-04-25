@@ -8,7 +8,9 @@ class AddSongButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.large(
-      onPressed: () {importSong();},
+      onPressed: () {
+        importSong();
+        },
       backgroundColor: AppColors.primary,
       child: const Icon(
         Icons.add, 
