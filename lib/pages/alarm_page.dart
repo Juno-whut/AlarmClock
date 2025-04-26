@@ -21,6 +21,7 @@ class AlarmPage extends StatefulWidget {
 class _AlarmPageState extends State<AlarmPage> {
   AudioPlayer? audioPlayer;
   List<AlarmList>? alarmList = [];
+  bool isPlaying = false;
 
   @override
   void initState() {
@@ -43,6 +44,7 @@ class _AlarmPageState extends State<AlarmPage> {
       await audioPlayer!.stop();
       await audioPlayer!.play(DeviceFileSource(path));
       logger.d('Playing song from path: $path');
+      setState(() => isPlaying = true);
 
       // Listen for when the song finishes playing
       audioPlayer!.onPlayerComplete.listen((event) async {
@@ -53,6 +55,15 @@ class _AlarmPageState extends State<AlarmPage> {
 
     } catch (e) {
       logger.e('Failed to play alarm song: $e');
+    }
+  }
+
+  Future<void> stopAlarmSong() async {
+    try {
+      await audioPlayer!.stop();  
+      setState(() => isPlaying = false);
+    } catch (e) {
+      logger.e('Failed to stop alarm song: $e');
     }
   }
 
@@ -101,6 +112,14 @@ class _AlarmPageState extends State<AlarmPage> {
           children: [
             AlarmListWidget(), 
             AddAlarmButton(),
+            if (isPlaying)
+              ElevatedButton(
+                onPressed: stopAlarmSong,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: Text('Stop Alarm'),
+              ),
           ],
         ),
       ),
