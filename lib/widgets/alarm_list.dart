@@ -22,6 +22,10 @@ class _AlarmListWidgetState extends State<AlarmListWidget> {
     });
   }
 
+  void refreshPage() {
+  setState(() {});
+}
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,10 +58,12 @@ class _AlarmListWidgetState extends State<AlarmListWidget> {
                       // figure out how to use switch
                       Switch(
                         value: alarmList[i].isOn,
-                        onChanged: (bool value) {
+                        onChanged: (bool value) async {
                           setState(() {
                             alarmList[i].isOn = value;
                           });
+                          await updateAlarmInJson(alarmList[i]);
+                          refreshPage();
                         },
                       ),
                       const SizedBox(width: 15,),
@@ -66,6 +72,7 @@ class _AlarmListWidgetState extends State<AlarmListWidget> {
                           deleteAlarm(i);
                           setState((){
                             alarmList.removeAt(i);
+                            refreshPage();
                           });
                         }, 
                         icon: const Icon(

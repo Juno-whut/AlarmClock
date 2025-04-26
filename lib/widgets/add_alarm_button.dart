@@ -24,6 +24,10 @@ class _AddAlarmButtonState extends State<AddAlarmButton> {
       });
     });
   }
+
+  void refreshPage() {
+    setState(() {});
+  }
   
   void _showAddAlarmDialog(List<SongLibrary> songList) async {
   String? selectedTitle;
@@ -123,8 +127,10 @@ class _AddAlarmButtonState extends State<AddAlarmButton> {
                 Navigator.of(context).pop();
                 setState(() {});
               }
+              refreshPage();
             }, 
             child: Text('Add Alarm')
+            
           ),
         ],
       );

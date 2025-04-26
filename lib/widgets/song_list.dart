@@ -47,6 +47,10 @@ class _SongListState extends State<SongList> {
     });
   }
 
+  void refreshPage() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
