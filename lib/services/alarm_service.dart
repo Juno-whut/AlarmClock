@@ -38,3 +38,15 @@ Future<void> deleteAlarm(alarmIndex) async {
   await writeAlarmJsonList(alarmList.map((a) => a.toJson()).toList());
 
 }
+
+// update alarm
+Future<void> updateAlarmInJson(AlarmList updatedAlarm) async {
+  final alarms = await readAlarmJsonList();
+  final index = alarms.indexWhere((alarm) => alarm.time == updatedAlarm.time && alarm.title == updatedAlarm.title);
+
+  if (index != -1) {
+    alarms[index] = updatedAlarm;
+    final updatedJsonList = alarms.map((alarm) => alarm.toJson()).toList();
+    await writeAlarmJsonList(updatedJsonList);
+  }
+}
