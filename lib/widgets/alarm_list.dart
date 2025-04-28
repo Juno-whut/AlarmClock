@@ -1,30 +1,12 @@
 import 'package:alarm_clock/constants/alarm_class.dart';
 import 'package:alarm_clock/constants/styles.dart';
-import 'package:alarm_clock/services/alarm_service.dart';
+import 'package:alarm_clock/widgets/alarm_switch.dart';
+import 'package:alarm_clock/widgets/delete_alarm_button.dart';
 import 'package:flutter/material.dart';
 
-class AlarmListWidget extends StatefulWidget {
-  const AlarmListWidget({super.key});
-
-  @override
-  State<AlarmListWidget> createState() => _AlarmListWidgetState(); 
-}
-
-class _AlarmListWidgetState extends State<AlarmListWidget> {
-  List<AlarmList> alarmList = [];
-  @override
-  void initState(){
-    super.initState();
-    readAlarmJsonList().then((alarms) {
-      setState((){
-        alarmList = alarms;
-      });
-    });
-  }
-
-  void refreshPage() {
-  setState(() {});
-}
+class AlarmListWidget extends StatelessWidget {
+  final List<AlarmList> alarmList;
+  const AlarmListWidget({super.key, required this.alarmList});
 
   @override
   Widget build(BuildContext context) {
@@ -56,30 +38,9 @@ class _AlarmListWidgetState extends State<AlarmListWidget> {
                       Text(alarmList[i].song, style: bodyStyle,),
                       const SizedBox(width: 15,),
                       // figure out how to use switch
-                      Switch(
-                        value: alarmList[i].isOn,
-                        onChanged: (bool value) async {
-                          setState(() {
-                            alarmList[i].isOn = value;
-                          });
-                          await updateAlarmInJson(alarmList[i]);
-                          refreshPage();
-                        },
-                      ),
+                      AlarmSwitch(alarmList: alarmList, i: i),
                       const SizedBox(width: 15,),
-                      IconButton(
-                        onPressed: () {
-                          deleteAlarm(i);
-                          setState((){
-                            alarmList.removeAt(i);
-                            refreshPage();
-                          });
-                        }, 
-                        icon: const Icon(
-                          Icons.delete, 
-                          color: Colors.white, size: 24
-                        ),
-                      ),
+                      DeleteAlarm(alarmList: alarmList, i: i,),
                     ],
                   ),
                 ],
