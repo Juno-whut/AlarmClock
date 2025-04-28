@@ -15,15 +15,18 @@ class _AddSongButtonState extends State<AddSongButton> {
     super.initState();
   }
 
-  void refreshPage() {
-    setState(() {});
+  Future<void> importAndRefresh() async {
+    final newSong = await importSong();
+    if (newSong != null) {
+      await loadSongs();
+      setState(() {});
+    }
   }
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.large(
       onPressed: () {
-        importSong();
-        refreshPage();
+        importAndRefresh();
         },
       backgroundColor: AppColors.primary,
       child: const Icon(

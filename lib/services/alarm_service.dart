@@ -18,8 +18,12 @@ Future<List<AlarmList>> readAlarmJsonList() async {
   }
 
   final contents = await file.readAsString();
-  final List<dynamic> data = jsonDecode(contents);
+  
+  if (contents.trim().isEmpty) {
+    return [];
+  }
 
+  final List<dynamic> data = jsonDecode(contents);
   return data.map((json) => AlarmList.fromJson(json)).toList();
 }
 
