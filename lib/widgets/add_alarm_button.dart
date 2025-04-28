@@ -6,7 +6,8 @@ import 'package:alarm_clock/constants/song_class.dart';
 import 'package:alarm_clock/services/alarm_service.dart';
 
 class AddAlarmButton extends StatefulWidget {
-  const AddAlarmButton({super.key});
+  const AddAlarmButton({super.key, required this.onAlarmAdded});
+  final VoidCallback onAlarmAdded;
 
   @override
   State<AddAlarmButton> createState() => _AddAlarmButtonState();
@@ -14,6 +15,9 @@ class AddAlarmButton extends StatefulWidget {
 
 class _AddAlarmButtonState extends State<AddAlarmButton> {
   List<SongLibrary> songList = [];
+  bool newAlarm = false;
+  
+  
 
   @override
   void initState() {
@@ -24,12 +28,16 @@ class _AddAlarmButtonState extends State<AddAlarmButton> {
       });
     });
   }
-
-  void refreshPage() {
-    setState(() {});
-  }
   
-  void _showAddAlarmDialog(List<SongLibrary> songList) async {
+
+  Future<void> addAlarmRefresh(BuildContext context) async {
+    await _showAddAlarmDialog(songList);
+    if (newAlarm == true) {
+      widget.onAlarmAdded(); // just refresh the alarms
+    }
+  }
+
+  Future<void> _showAddAlarmDialog(List<SongLibrary> songList) async {
   String? selectedTitle;
   TimeOfDay? selectedTime;
   SongLibrary? selectedSong;
@@ -97,7 +105,12 @@ class _AddAlarmButtonState extends State<AddAlarmButton> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              setState((){
+                newAlarm = false;
+              });
+              Navigator.of(context).pop();
+              },
             child: Text('Cancel'),
           ),
           ElevatedButton(
@@ -118,19 +131,16 @@ class _AddAlarmButtonState extends State<AddAlarmButton> {
                   title: selectedTitle ?? 'Alarm'
                 );
 
+                setState((){
+                  this.newAlarm = true;
+                });
                 final existingAlarms = await readAlarmJsonList();
                 existingAlarms.add(newAlarm);
-                await writeAlarmJsonList(
-                  existingAlarms.map((e) => e.toJson()).toList()
-                );
-                
+                writeAlarmJsonList(existingAlarms.map((e) => e.toJson()).toList());
                 Navigator.of(context).pop();
-                setState(() {});
               }
-              refreshPage();
             }, 
             child: Text('Add Alarm')
-            
           ),
         ],
       );
@@ -140,7 +150,7 @@ class _AddAlarmButtonState extends State<AddAlarmButton> {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.large(
-      onPressed: () => _showAddAlarmDialog(songList),
+      onPressed: () => addAlarmRefresh(context),
       backgroundColor: AppColors.primary,
       child: const Icon(
         Icons.add, 

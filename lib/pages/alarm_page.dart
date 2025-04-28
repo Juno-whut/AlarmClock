@@ -34,24 +34,20 @@ class _AlarmPageState extends State<AlarmPage> {
       });
     });
   }
+
   @override
   void dispose() {
     super.dispose();
+    audioPlayer?.dispose();
   }
 
   Future<void> playAlarmSong(String path) async {
     try {
       await audioPlayer!.stop();
       await audioPlayer!.play(DeviceFileSource(path));
-      logger.d('Playing song from path: $path');
+      await audioPlayer!.setReleaseMode(ReleaseMode.loop);
+      // logger.d('Playing song from path: $path');
       setState(() => isPlaying = true);
-
-      // Listen for when the song finishes playing
-      audioPlayer!.onPlayerComplete.listen((event) async {
-        logger.d('Song ended, replaying...');
-        await audioPlayer!.seek(Duration.zero);
-        await audioPlayer!.resume();
-      });
 
     } catch (e) {
       logger.e('Failed to play alarm song: $e');
@@ -76,19 +72,27 @@ class _AlarmPageState extends State<AlarmPage> {
       final ampm = now.period == DayPeriod.am ? 'AM' : 'PM';
       final formattedNow = '$hour:${minute.toString().padLeft(2, '0')}';
 
-      logger.d('Checking alarms at $formattedNow $ampm');
+      // logger.d('Checking alarms at $formattedNow $ampm');
 
     for (final alarm in alarms) {
       logger.d('Checking alarm: ${alarm.time} ${alarm.ampm}');
       if (alarm.isOn &&
           alarm.time == formattedNow &&
           alarm.ampm == ampm) {
-        logger.d('Triggering alarm: ${alarm.title}');
+        // logger.d('Triggering alarm: ${alarm.title}');
         await playAlarmSong(alarm.songPath);
         break;
         }
       }
     });
+  }
+
+  Future<void> loadAlarms() async {
+    readAlarmJsonList().then((alarms) {
+      setState(() {
+        alarmList = alarms;
+      });
+    }); 
   }
 
   @override
@@ -106,12 +110,13 @@ class _AlarmPageState extends State<AlarmPage> {
           ),
         ),
       ),
-
+      
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AlarmListWidget(), 
-            AddAlarmButton(),
+            AlarmListWidget(alarmList: alarmList!), 
+            AddAlarmButton(onAlarmAdded: loadAlarms),
+            SizedBox(height: 15),
             if (isPlaying)
               ElevatedButton(
                 onPressed: stopAlarmSong,
